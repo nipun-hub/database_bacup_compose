@@ -8,7 +8,7 @@ services:
       - ./db_backups:/backups # Store backups on host
       - ./backup.sh:/backup.sh # Mount custom backup script
     environment:
-      MYSQL_HOST: 95.111.248.142  # Remote database IP
+      MYSQL_HOST: elight.lk  # Remote database IP
       MYSQL_PORT: 6200           # Remote database port
       MYSQL_USER: root           # Database user
       MYSQL_PASSWORD: J6bDrh24   # Database password
