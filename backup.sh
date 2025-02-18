@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Database credentials
+# Database
 HOST=$MYSQL_HOST
 PORT=$MYSQL_PORT
 USER=$MYSQL_USER
