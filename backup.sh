@@ -1,17 +1,21 @@
 #!/bin/bash
-TIMESTAMP=$(date +"%F-%H-%M-%S")
-BACKUP_FILE="/backups/${MYSQL_DATABASE}_${TIMESTAMP}.sql"
 
-echo "Starting backup for database ${MYSQL_DATABASE}..." > /backups/backup.log
+# Define variables
+BACKUP_DIR="/backups"
+DATE=$(date +"%Y%m%d_%H%M%S")
+BACKUP_FILE="$BACKUP_DIR/ict_lms_backup_$DATE.sql"
 
-# Run mysqldump and redirect both stdout and stderr to the log
-mysqldump -h mariadb-container -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE} --skip-ssl > ${BACKUP_FILE} 2>> /backups/backup.log
+# Perform the backup using mysqldump
+mysqldump \
+  -h $MYSQL_HOST \
+  -P $MYSQL_PORT \
+  -u $MYSQL_USER \
+  -p$MYSQL_PASSWORD \
+  $MYSQL_DATABASE > $BACKUP_FILE
 
+# Check if the backup was successful
 if [ $? -eq 0 ]; then
-  echo "Backup completed: ${BACKUP_FILE}" >> /backups/backup.log
+  echo "[$(date)] Backup successful: $BACKUP_FILE"
 else
-  echo "Backup failed. Check the log for errors." >> /backups/backup.log
+  echo "[$(date)] Backup failed!"
 fi
-
-# Keep only the 7 most recent backups and remove the rest
-ls -t /backups/*.sql | tail -n +8 | xargs rm
