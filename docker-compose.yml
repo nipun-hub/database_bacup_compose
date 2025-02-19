@@ -7,7 +7,7 @@ services:
       - db_backups:/backups # Use a named volume for backups
       - ./backup.sh:/backup.sh # Mount the backup script
     environment:
-      MYSQL_HOST: elight.lk
+      MYSQL_HOST: 0.0.0.0
       MYSQL_PORT: 6200
       MYSQL_USER: root
       MYSQL_PASSWORD: J6bDrh24
