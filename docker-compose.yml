@@ -1,36 +1,20 @@
 version: "3.9"
 services:
-
-  mariadb:
-    image: mariadb:10.6.20
-    container_name: mariadb-container
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: ict_lms
-      MYSQL_USER: db_user
-      MYSQL_PASSWORD: 1234
-    ports:
-      - "6200:3306"
-    volumes:
-      - mariadb_data:/var/lib/mysql
-      - ./db-init:/docker-entrypoint-initdb.d # Auto-import SQL script
-  # New Backup Service
   db_backup:
     image: bash:latest # Use a lightweight Bash container
-    container_name: db-backup-container
+    container_name: db-backup
     volumes:
-      - mariadb_data:/var/lib/mysql # Access MariaDB data
       - ./db_backups:/backups # Store backups on host
       - ./backup.sh:/backup.sh # Mount custom backup script
     environment:
-      MYSQL_CONTAINER: mariadb-container
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 1234
-      MYSQL_DATABASE: ict_lms
-    entrypoint: /bin/sh -c "apk add --no-cache mysql-client && while true; do sh /backup.sh; sleep 86400; done"
+      MYSQL_HOST: 95.111.248.142 # MariaDB host IP address
+      MYSQL_PORT: 3306           # MariaDB port
+      MYSQL_USER: root           # MariaDB username
+      MYSQL_PASSWORD: J6bDrh24   # MariaDB password
+      MYSQL_DATABASE: ict_lms    # Database name
+    entrypoint: /bin/sh -c "apk add --no-cache mysql-client && while true; do sh ./backup.sh; sleep 5; done"
       # Run backup every hour
       # Infinite loop to run the backup script once every 24 hours
 
 volumes:
-  mariadb_data:
   db_backups:
