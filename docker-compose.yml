@@ -4,7 +4,7 @@ services:
     image: bash:latest # Use a lightweight Bash container
     container_name: db-backup
     volumes:
-      - db_backups:/backups # Store backups on host
+      - ./db_backups:/backups # Store backups on host
       - ./backup.sh:/backup.sh # Mount custom backup script
     environment:
       MYSQL_HOST: 95.111.248.142 # MariaDB host IP address
