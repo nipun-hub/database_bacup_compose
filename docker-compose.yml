@@ -14,7 +14,6 @@ services:
       MYSQL_DATABASE: ict_lms    # Database name
     entrypoint: /bin/sh -c "apk add --no-cache mysql-client && while true; do sh ./backup.sh; sleep 5; done"
       # Run backup every hour
-      # Infinite loop to run the backup script once every 24 hours
 
 volumes:
   db_backups:
